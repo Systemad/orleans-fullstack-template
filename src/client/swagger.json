@@ -1,0 +1,308 @@
+{
+  "x-generator": "NSwag v13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))",
+  "swagger": "2.0",
+  "info": {
+    "title": "Shopping APi",
+    "description": "Web API for Shopping",
+    "contact": {
+      "name": "systemad",
+      "url": "https://github.com/Systemad/",
+      "email": ""
+    },
+    "version": "v1"
+  },
+  "host": "localhost:7099",
+  "schemes": ["https"],
+  "paths": {
+    "/shopping-cart": {
+      "get": {
+        "tags": ["ShoppingCart"],
+        "operationId": "ShoppingCart_GetShoppingCart",
+        "produces": ["text/plain", "application/json", "text/json"],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "A list of clients items in shopping cart",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/CartItem"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/shopping-cart/add/{id}/{quantity}": {
+      "get": {
+        "tags": ["ShoppingCart"],
+        "operationId": "ShoppingCart_AddItemToCart",
+        "produces": ["text/plain", "application/json", "text/json"],
+        "parameters": [
+          {
+            "type": "string",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "x-nullable": true
+          },
+          {
+            "type": "integer",
+            "name": "quantity",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/CartItem"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/shopping-cart/remove/{id}/{quantity}": {
+      "get": {
+        "tags": ["ShoppingCart"],
+        "operationId": "ShoppingCart_RemoveItemFromCart",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "x-nullable": true
+          },
+          {
+            "type": "integer",
+            "name": "quantity",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/shopping-cart/empty": {
+      "get": {
+        "tags": ["ShoppingCart"],
+        "operationId": "ShoppingCart_EmptyCart",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/product": {
+      "get": {
+        "tags": ["Product"],
+        "operationId": "Product_Index",
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
+      }
+    },
+    "/category/all": {
+      "get": {
+        "tags": ["Category"],
+        "operationId": "Category_GetCategories",
+        "produces": ["text/plain", "application/json", "text/json"],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ProductCategory"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/category/{category}": {
+      "get": {
+        "tags": ["Category"],
+        "summary": "Get items of a specific category, default is 10",
+        "operationId": "Category_GetItemsForCategory",
+        "produces": ["text/plain", "application/json", "text/json"],
+        "parameters": [
+          {
+            "type": "string",
+            "name": "category",
+            "in": "path",
+            "required": true,
+            "description": "Enter a category to fetch items of",
+            "x-schema": {
+              "$ref": "#/definitions/ProductCategory"
+            },
+            "x-nullable": false,
+            "enum": [
+              "Accessories",
+              "Hardware",
+              "Software",
+              "Books",
+              "Movies",
+              "Music",
+              "Games",
+              "Other"
+            ]
+          },
+          {
+            "type": "integer",
+            "name": "limit",
+            "in": "query",
+            "description": "Enter amount, leave empty if default amount should be retrieved",
+            "format": "int32",
+            "default": 10,
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "List of products",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ProductDetail"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/category/random": {
+      "get": {
+        "tags": ["Category"],
+        "summary": "Get total items of a random category, default is 10",
+        "operationId": "Category_GetItemsOfRandomCategory",
+        "produces": ["text/plain", "application/json", "text/json"],
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "limit",
+            "in": "query",
+            "description": "Enter amount, leave empty if default amount should be retrieved",
+            "format": "int32",
+            "default": 10,
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "List of products",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ProductDetail"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "CartItem": {
+      "type": "object",
+      "required": ["userId", "quantity", "productDetail"],
+      "properties": {
+        "userId": {
+          "type": "string"
+        },
+        "quantity": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "productDetail": {
+          "$ref": "#/definitions/ProductDetail"
+        }
+      }
+    },
+    "ProductDetail": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "description",
+        "category",
+        "quantity",
+        "price",
+        "imageUrl"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "category": {
+          "$ref": "#/definitions/ProductCategory"
+        },
+        "quantity": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "price": {
+          "type": "number",
+          "format": "decimal"
+        },
+        "imageUrl": {
+          "type": "string"
+        }
+      }
+    },
+    "ProductCategory": {
+      "type": "string",
+      "description": "",
+      "x-enumNames": [
+        "Accessories",
+        "Hardware",
+        "Software",
+        "Books",
+        "Movies",
+        "Music",
+        "Games",
+        "Other"
+      ],
+      "enum": [
+        "Accessories",
+        "Hardware",
+        "Software",
+        "Books",
+        "Movies",
+        "Music",
+        "Games",
+        "Other"
+      ]
+    }
+  }
+}
